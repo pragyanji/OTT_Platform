@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTT Sign In</title>
+    <link rel="stylesheet" href="{% static "styles_signin_signup.css" %}">
+</head>
+<body>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="login-form">
+            <h2>Sign in</h2>
+            <form autocomplete = 'off' method = 'POST'>
+                {%csrf_token%}
+                <div class="input-group">
+                    <label for="email" re>
+                        <span class="icon">📧</span>
+                        <input required type="email" id="email" name="email" placeholder="Email" >
+                    </label>
+                </div>
+                <div class="input-group">
+                    <label for="password">
+                        <span class="icon">🔒</span>
+                        <input required type="password" id="password" name="password" placeholder="Password">
+                    </label>
+                </div>
+                <div class="remember-me">
+                    <input required type="checkbox" id="remember" name="remember">
+                    <label for="remember"><p>Remember me</p></label>
+                </div>
+                <button type="submit">Sign in</button>
+            </form>
+            <a href="/signup" class="create-account"> New to OTT? Sign up now.</a>
+            <div class="social-login">
+                <p>Or Sign in with</p>
+                <div class="social-icons">
+                    <a href="#" class="facebook"><img src="{% static "images/facebook-logo.png" %}" alt="Facebook"></a>
+                    <a href="#" class="twitter"><img src="{% static "images/twitter-logo.png" %}" alt="Twitter"></a>
+                    <a href="#" class="google"><img src="{% static "images/google-logo.png" %}" alt="Google"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

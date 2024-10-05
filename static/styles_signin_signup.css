@@ -1,0 +1,212 @@
+body {
+    font-family: Arial, sans-serif;
+    background: url('images/h.jpeg') ;
+    background-size: 100% 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-form, .signup-form {
+    background: rgba(21, 19, 19, 0.9); /* Semi-transparent background */
+    padding: 30px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+p {
+    color: #216dbe;
+}
+input{
+    color: #7a90b7;
+}
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background: transparent;
+}
+
+.input-group .icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    font-size: 16px;
+}
+
+.remember-me, .checkbox-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.remember-me input {
+    margin-right: 10px;
+}
+
+.label-agree-term{
+    color: #0056b3;
+}
+/* .checkbox-group{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+} */
+button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+.create-account {
+    display: block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.create-account:hover {
+    text-decoration: underline;
+}
+
+.social-login {
+    margin-top: 20px;
+}
+
+.social-login p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.social-icons a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.social-icons a:hover {
+    transform: scale(1.1);
+}
+
+.social-icons img {
+    width: 24px;
+    height: 24px;
+}
+/* Container for messages */
+.messages {
+    position: fixed; /* Fixed positioning to stay at the top right */
+    top: 10px; /* Distance from the top */
+    right: 10px; /* Distance from the right */
+    z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+/* Individual alert messages */
+.alert {
+    padding: 15px;
+    margin-bottom: 10px; /* Space between messages */
+    border: 1px solid transparent;
+    border-radius: 4px;
+    opacity: 0; /* Initially hidden for fade-in effect */
+    animation: fadeIn 0.5s forwards, fadeOut 0.5s 5.5s forwards; /* Fade in and then fade out */
+}
+
+/* Success message styling */
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+/* Error message styling */
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+/* Info message styling */
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+/* Warning message styling */
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+/* Animation for fade-in effect */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Animation for fade-out effect */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

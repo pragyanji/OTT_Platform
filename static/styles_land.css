@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)), url('images/h.jpeg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    padding-left: 50px;
+    padding-top: 60px; /* Adjust for header height */
+}
+
+.welcome-section {
+    max-width: 300px;
+}
+
+.welcome-section h1 {
+    font-size: 36px;
+}
+
+.welcome-section p {
+    margin: 10px 0;
+}
+
+.buttons {
+    margin: 20px 0;
+}
+
+.buttons button {
+    background-color: #216dbe;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    margin: 0 10px 10px 0;
+}
+
+.buttons span {
+    display: block;
+    margin: 10px 0;
+}
+
+.membership-note {
+    margin-top: 20px;
+}

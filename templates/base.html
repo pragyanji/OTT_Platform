@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles_dash.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+</head>
+
+<body>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <nav class="flex-div">
+        <div class="nav-left flex-div">
+            <img src={% static "images/logo.png" %} onclick="location.reload();" class="logo" alt="logo" id="Logo">
+        </div>
+        <form method="GET" action="{% url 'search' %}">
+            {% csrf_token %}
+        <div class="search-box flex-div">
+            <input type="text" placeholder="Search" name = "query">
+            {% comment %} <button type="submit">Search</button> {% endcomment %}
+            {% comment %} <button type="submit"><i class="fa fa-search"></i></button> {% endcomment %}
+        </div>
+        </form>
+        <div class="nav-middle flex-div">
+        </div>
+
+        <div class="nav-right flex-div">
+            <img src="images/icons8-bookmark.svg" class="watchlist" alt="Watchlist">
+            <img src="images/notification.png" class="notification" alt="Notification">
+            <img src={% static "images/prologo.png" %} class="user-icon" id="profileIcon" alt="Profile">
+        </div>
+    </nav>
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebarMenu">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="sidebar-item"><a href="{% url 'movies' %}">Movies</a></li>
+            <li class="sidebar-item"><a href="{% url 'tv_shows' %}">TV Shows</a></li>
+            <li class="sidebar-item"><a href="{% url 'recently_watched' %}">Recently Watched</a></li>
+            <li class="sidebar-item"><a href="{% url 'more' %}">More</a></li>
+        </ul>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-list">
+            <ul>
+            <li class="nav-item" id="home"><a href="{% url 'home' %}">Home</a></li>
+            <li class="nav-item" id="movies"><a href="{% url 'movies' %}">Movies</a></li>
+            <li class="nav-item" id="tvshows"><a href="{% url 'tv_shows' %}">TV Shows</a></li>
+            <li class="nav-item" id="recently-watched"><a href="{% url 'recently_watched' %}">Recently Watched</a></li>
+            <li class="nav-item" id="more"><a href="{% url 'more' %}">More</a></li>
+            </ul>
+        </div>
+        <div class="shadow-bg"></div>
+    </nav>
+
+    <!-- Main Content -->
+    {% block content %}
+
+
+    {% endblock %}
+    <!-- Profile Popup -->
+    <div class="popup-box" id="popupBox">
+        <div class="profile-section">
+            <img src="images/mik.jpeg" alt="Profile Picture" class="profile-picture">
+            <div class="profile-name">
+                <a><strong>Name:</strong>{{user.first_name}} {{user.last_name}}<br><strong>Joined on:</strong>{{user.date_joined}}</a>
+            </div>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-user"></i> Profile
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-cog"></i> Settings
+        </div>
+        <div class="menu-item">
+            <form action = 'sign/'>
+                {% csrf_token %}
+            {% comment %} <i class="fas fa-sign-out-alt"></i> Logout {% endcomment %}
+            <i class="fas fa-sign-out-alt"><a href="{% url 'logout' %}">Logout</a></i>
+            {% comment %} <input type = 'hidden'> {% endcomment %}
+            {% comment %} <button type = 'submit'> {% endcomment %}
+            
+            </form>
+        </div>
+    </div>
+
+    <script >
+        document.addEventListener("DOMContentLoaded", function () {
+            const navItems = document.querySelectorAll('.nav-item');
+            const shadowBg = document.querySelector('.shadow-bg');
+            const profileIcon = document.getElementById('profileIcon'); // Consistent variable naming
+            const profilePopup = document.getElementById('popupBox');
+            const closePopup = document.getElementById('close-popup');
+            
+
+            navItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const { offsetWidth: width, offsetHeight: height, offsetLeft: left, offsetTop: top } = this;
+                    const centerX = left + width / 2;
+                    const centerY = top + height / 2;
+                    shadowBg.style.width = `${width + 10}px`;
+                    shadowBg.style.height = `${height + 10}px`;
+                    shadowBg.style.left = `${centerX - (width + 10) / 2}px`;
+                    shadowBg.style.top = `${centerY - (height + 10) / 2}px`;
+                    shadowBg.style.borderRadius = '8px';
+                });
+            });
+
+            profileIcon.addEventListener('click', () => {
+                if (popupBox.style.display === 'flex') {
+                    popupBox.style.display = 0;
+                    popupBox.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        popupBox.style.display = 'none';
+                    }, 100); // Wait for animation to finish before hiding
+                } else {
+                    popupBox.style.display = 'flex';
+                    setTimeout(() => {
+                        popupBox.style.opacity = 1;
+                        popupBox.style.transform = 'translateY(0)';
+                    }, 10);
+                }
+            });
+            //Hide the window
+            window.addEventListener('click', function (event) {
+                if (!profileIcon.contains(event.target) && !profilePopup.contains(event.target)) {
+                    if (profilePopup.style.display === 'flex') {
+                        profilePopup.style.opacity = 0;
+                        profilePopup.style.transform = 'translateY(-20px)';
+                        setTimeout(() => {
+                            profilePopup.style.display = 'none';
+                        }, 100); // Wait for animation to finish before hiding
+                    }
+                }
+            });
+            // Reload the window when its size changes
+            window.addEventListener('resize', function () {
+                clearTimeout(this.reloadTimer);
+                this.reloadTimer = setTimeout(function () {
+                    location.reload();
+                }, 200); // Increase timeout to 500ms
+            });
+
+        });
+
+        // Sidebar toggle
+        var menuIcon = document.querySelector('.menu-icon');
+        var sidebarMenu = document.getElementById('sidebarMenu');
+
+        menuIcon.addEventListener('click', function () {
+            if (sidebarMenu.classList.contains('active')) {
+                sidebarMenu.classList.remove('active');
+            } else {
+                sidebarMenu.classList.add('active');
+            }
+        });
+
+        // Close the sidebar if clicked outside
+        document.addEventListener('click', function (event) {
+            if (!sidebarMenu.contains(event.target) && event.target !== menuIcon) {
+                sidebarMenu.classList.remove('active');
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var logo = document.querySelector('.logo');
+
+            // Reload the page when the logo is clicked
+            logo.addEventListener('click', function () {
+                location.reload();
+            });
+
+            // Other existing code...
+        });
+    </script>
+    <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
+</body>
+
+</html>

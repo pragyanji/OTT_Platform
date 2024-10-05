@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+{% block title %}Recently WatchedSearch{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="video-container">
+        {% for movie in movies %}
+        <div class="video-item">
+            <div class="video-title"><h5>{{movie.M_name}}||{{movie.duration}}||{{movie.release_date}}</h5></div>
+            <video id="my-video"  class="video-js" controls width="300px" height="230px" data-setup="{}">
+                <source src="{{movie.movie.url}}" type="video/mp4">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+    
+    

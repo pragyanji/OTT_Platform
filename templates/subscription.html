@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subscription Plans</title>
+    <link rel="stylesheet" href="{% static "style_subscription.css" %}">
+  </head>
+  <body>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="container">
+      <h2>Choose the plan that’s right for you</h2>
+      <div class="plans">
+        <div class="plan">
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="plan" value="Basic" />
+            <h3>Basic</h3>
+            <p><strong>Resolution:</strong> 720p</p>
+            <p><strong>Price:</strong> $8.99/month</p>
+            <button type="submit">Select Plan</button>
+          </form>
+        </div>
+
+        <div class="plan">
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="plan" value="Standard" />
+            <h3>Standard</h3>
+            <p><strong>Resolution:</strong> 1080p</p>
+            <p><strong>Price:</strong> $12.99/month</p>
+            <button type="submit">Select Plan</button>
+          </form>
+        </div>
+        <div class="plan">
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="plan" value="Premium" />
+            <h3>Premium</h3>
+            <p><strong>Resolution:</strong> 4K+HDR</p>
+            <p><strong>Price:</strong> $15.99/month</p>
+            <button type="submit">Select Plan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="menu-item">
+      <form action = 'sign/'>
+          {% csrf_token %}
+      <i class="fas fa-sign-out-alt"><a href="{% url 'logout' %}">Logout</a></i>
+      </form>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="{% static 'styles_land.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">OTT Platform</div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Welcome to the OTT Platform</h1>
+            <p>Enjoy exclusive contents as well as popular movies and TV shows.</p>
+            <div class="buttons">
+                <form action="signin">
+                    <button type="submit" class="sign-in">Already a Member? Sign in</button>
+                </form>
+                <span>or</span>
+                <form action="signup">
+                    <button type="submit">New to OTT? Sign up</button>
+                </form>
+            </div>
+            <p>Watch unlimited movies and TV shows at just Rs.200</p>
+        </div>
+    </div>
+</body>
+</html>

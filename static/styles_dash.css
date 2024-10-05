@@ -1,0 +1,430 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #5a5a5a;
+}
+
+img {
+  cursor: pointer;
+}
+
+.flex-div {
+  color: black;
+  position: relative;
+  display: flex;
+  height: 50px;
+  align-items: center;
+}
+
+nav {
+  width: 100%;
+  justify-content: space-between;
+  box-shadow: 0 0 10px rgba(79, 33, 33, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nav-right img {
+  margin: 7px;
+  width: 30px;
+}
+
+.nav-left {
+  width: 110px;
+}
+
+
+.nav-right .user-icon {
+  width: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.nav-left .menu-icon {
+  width: 14px;
+  border-radius: 50%;
+  margin-right: 15px;
+  margin-left: 9px;
+}
+
+.nav-left .logo {
+  height: 30px;
+  width: 100px;
+  /* border-radius: 40%; */
+  margin-right: 50px;
+  object-fit: cover;
+}
+
+.nav-right .watchlist {
+  width: 20px;
+  /* height: 20px; */
+  border-radius: 50%;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+  /* background-color: transparent; */
+}
+
+.nav-right .watchlist:hover {
+  height: 30px;
+  width: 25px;
+  background-color: #ccc;
+}
+
+.nav-right .notification {
+  width: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.nav-right .notification:hover {
+  background-color: #ccc;
+}
+
+.search-box {
+  flex-flow: row wrap;
+  width: 45%;
+  height: 70%;
+  border: 1px solid #ccc;
+  padding: 6.5px 15px;
+  border-radius: 25px;
+}
+
+.search-box input {
+  color: rgb(23, 22, 22);
+  width: 95%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+
+.main-content {
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 10px;
+}
+
+.nav-list {
+  margin-right: 1rem;
+  justify-content: center;
+  display: flex;
+}
+
+.nav-list ul {
+  list-style: none; /* Removes default list bullet points */
+  margin: 0;
+  padding: 0;
+  display: flex; /* Aligns the items horizontally */
+}
+
+.nav-list li {
+  padding: 5px; /* Adds some space around each item */
+}
+
+.navbar .nav-item {
+  margin: 10px;
+}
+
+.nav-item {
+  color: #fff;
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-item:hover {
+  color: #257de1;
+}
+
+.shadow-bg {
+  position: absolute;
+  background-color: rgba(129, 123, 123, 0.5);
+  transition: width 0.3s ease, height 0.3s ease, left 0.3s ease, top 0.3s ease;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+/* Video wala row */
+.video-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Default: 2 videos per row */
+  gap: 10px;
+  margin-top: 10px;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding: 0 10px;
+}
+
+/* Media query for screens 768px and larger */
+@media (min-width: 768px) {
+  .video-container {
+      grid-template-columns: repeat(3, 1fr); /* Increase to 3 videos per row */
+  }
+}
+
+/* Media query for screens 1024px and larger */
+@media (min-width: 1024px) {
+  .video-container {
+      grid-template-columns: repeat(4, 1fr); /* Increase to 4 videos per row */
+  }
+}
+
+/* Media query for screens 375px and smaller */
+@media (max-width: 375px) {
+  .video-container {
+      grid-template-columns: 1fr; /* Only 1 video per row */
+  }
+}
+
+.video-item {
+  height: 280px;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  aspect-ratio: 16 / 9; /* didn't know why not working */
+}
+
+.video-item:hover {
+  transform: scale(1.04);
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.video-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-title {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Profile Popup */
+.popup-box {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 250px;
+  height: 250px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0; /* Remove padding to ensure full width */
+  transform: translateY(-20px); /* Start with slight offset */
+  opacity: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+}
+
+.popup-box.active {
+  display: flex;
+  transform: translateY(0); /* Move into position */
+  opacity: 1; /* Fade in */
+}
+
+.profile-section {
+  width: 100%;
+  background-color: #e6e6e6; /* Background color for profile section */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+  margin-bottom: 10px; /* Add margin to separate from menu items */
+}
+
+.profile-section .profile-picture {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.profile-section .profile-name {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.menu-item {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 600px) {
+  .popup-box {
+      width: 120px;
+      height: 220px;
+      top: 60px;
+      right: 10px;
+      padding: 0;
+  }
+
+  .menu-item {
+      padding: 8px;
+  }
+
+  .profile-section .profile-picture {
+      width: 50px;
+      height: 50px;
+  }
+
+  .profile-section .profile-name {
+      font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .popup-box {
+      width: 100px;
+      height: 200px;
+      top: 50px;
+      right: 5px;
+  }
+
+  .menu-item {
+      padding: 6px;
+      font-size: 12px;
+  }
+
+  .profile-section .profile-picture {
+      width: 40px;
+      height: 40px;
+  }
+
+  .profile-section .profile-name {
+      font-size: 11px;
+  }
+}
+
+/* Sidebar Menu */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  padding-top: 60px; /* Space for the top navbar */
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-item {
+  padding: 15px 20px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sidebar-item:hover {
+  background-color: #575757;
+}
+
+/* Show the sidebar */
+.sidebar.active {
+  left: 0;
+}
+
+/* Container for messages */
+.messages {
+  position: fixed; /* Fixed positioning to stay at the top right */
+  top: 10px; /* Distance from the top */
+  right: 10px; /* Distance from the right */
+  z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+/* Individual alert messages */
+.alert {
+  padding: 15px;
+  margin-bottom: 10px; /* Space between messages */
+  border: 1px solid transparent;
+  border-radius: 4px;
+  opacity: 0; /* Initially hidden for fade-in effect */
+  animation: fadeIn 0.5s forwards, fadeOut 0.5s 5.5s forwards; /* Fade in and then fade out */
+}
+
+/* Success message styling */
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+/* Error message styling */
+.alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+/* Info message styling */
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+/* Warning message styling */
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+
+/* Animation for fade-in effect */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Animation for fade-out effect */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
