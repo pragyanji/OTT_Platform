@@ -28,8 +28,6 @@
             {% csrf_token %}
         <div class="search-box flex-div">
             <input type="text" placeholder="Search" name = "query">
-            {% comment %} <button type="submit">Search</button> {% endcomment %}
-            {% comment %} <button type="submit"><i class="fa fa-search"></i></button> {% endcomment %}
         </div>
         </form>
         <div class="nav-middle flex-div">
@@ -87,11 +85,7 @@
         <div class="menu-item">
             <form action = 'sign/'>
                 {% csrf_token %}
-            {% comment %} <i class="fas fa-sign-out-alt"></i> Logout {% endcomment %}
-            <i class="fas fa-sign-out-alt"><a href="{% url 'logout' %}">Logout</a></i>
-            {% comment %} <input type = 'hidden'> {% endcomment %}
-            {% comment %} <button type = 'submit'> {% endcomment %}
-            
+            <i class="fas fa-sign-out-alt"><a href="{% url 'logout' %}">Logout</a></i>            
             </form>
         </div>
     </div>

@@ -38,8 +38,8 @@ nav {
 
 .nav-left {
   width: 110px;
+  left: 30px;
 }
-
 
 .nav-right .user-icon {
   width: 25px;
@@ -111,7 +111,7 @@ nav {
 }
 
 .navbar {
-  background-color: #333;
+  background-color: #140f0f;
   padding: 10px;
 }
 
