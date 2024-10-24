@@ -1,21 +1,10 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 
 {% block title %}Search{% endblock %}
 
 {% block content %}
-<div class="main-content">
-    <div class="video-container">
-        <p>Showing results for "{{ query }}":</p>
-        {% for movie in movies %}
-        <div class="video-item">
-            <div class="video-title"><h5>{{movie.M_name}}||{{movie.duration}}||{{movie.release_date}}</h5></div>
-            <video id="my-video"  class="video-js" controls width="300px" height="230px" data-setup="{}">
-                <source src="{{movie.movie.url}}" type="video/mp4">
-        </div>
-        {% endfor %}
-    </div>
-</div>
+<p>Result for your search: "{{query}}"</p>
 {% endblock %}
     
     

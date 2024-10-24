@@ -1,0 +1,375 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #001f3f;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.header nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.header nav a {
+    margin: 0 1rem;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.header nav a:hover {
+    color: #1a8cff;
+}
+
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger-menu div {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 3px 0;
+}
+
+.profile-button {
+    margin-left: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.profile-button img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #243b55;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    width: 240px;
+    text-align: left;
+    z-index: 1;
+    padding: 1rem 0;
+}
+
+.profile-menu a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+.profile-menu a:hover {
+    background-color: #3b4a61;
+}
+
+.profile-menu a .menu-icon {
+    margin-right: 0.75rem;
+    font-size: 1.2rem;
+}
+
+.profile-button:focus + .profile-menu,
+.profile-menu.show {
+    display: block;
+}
+
+.edit-profile-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1f2e3e;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+    width: 90%;
+    max-width: 500px;
+    z-index: 2;
+}
+
+.edit-profile-modal h2 {
+    color: #1a8cff;
+    margin-bottom: 1rem;
+}
+
+.edit-profile-options {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.edit-profile-options li {
+    margin-bottom: 1rem;
+}
+
+.edit-profile-options a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.edit-profile-options a:hover {
+    text-decoration: underline;
+}
+
+.change-section {
+    display: none;
+    margin-top: 1rem;
+    border-top: 1px solid #3b4a61;
+    padding-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.edit-profile-modal label {
+    display: block;
+    margin: 1rem 0 0.5rem;
+    color: #fff;
+}
+
+.edit-profile-modal input[type="text"],
+.edit-profile-modal input[type="email"],
+.edit-profile-modal input[type="password"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: 2px solid #3498db;
+    background-color: #000;
+    color: #fff;
+}
+
+.edit-profile-modal .show-password {
+    position: relative;
+}
+
+.edit-profile-modal .show-password input[type="password"] {
+    padding-right: 2.5rem;
+}
+
+.show-password-icon {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #1a8cff;
+}
+
+.edit-profile-modal button {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 5px;
+    border: 2px solid #1a8cff;
+    background-color: #1a8cff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.edit-profile-modal button:hover {
+    background-color: #005bb5;
+}
+
+.edit-profile-modal .cancel-button {
+    background-color: #333;
+    margin-top: 0.5rem;
+}
+
+.edit-profile-modal .cancel-button:hover {
+    background-color: #555;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.modal-overlay.show,
+.edit-profile-modal.show,
+.my-account-modal.show,
+.subscription-modal.show {
+    display: block;
+}
+
+.search-bar {
+    margin: 1.5rem auto;
+    text-align: center;
+}
+
+.search-bar input[type="text"] {
+    padding: 0.5rem;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 5px;
+    border: 2px solid #1a8cff;
+    background-color: #000;
+    color: #fff;
+    transition: width 0.3s ease;
+}
+
+.search-bar input[type="text"]:focus {
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-bar input[type="text"]::placeholder {
+    color: #1a8cff;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.card {
+    background-color: #1f2e3e;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.card .title {
+    font-size: 1.2rem;
+    color: #1a8cff;
+    margin-top: 0.5rem;
+}
+/* Video Card Styling */
+.video-card {
+    position: relative;
+}
+
+.video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+    .card {
+        width: calc(33% - 2rem);
+    }
+}
+
+.my-account-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1f2e3e;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 2;
+}
+
+.my-account-content img.account-profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.my-account-content h3 {
+    color: #1a8cff;
+    margin-bottom: 0.5rem;
+}
+
+.my-account-content p {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.subscription-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1f2e3e;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 2;
+}
+
+.subscription-modal h3 {
+    color: #1a8cff;
+    margin-bottom: 1rem;
+}
+
+.subscription-modal button {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    width: 80%;
+    border-radius: 5px;
+    border: 2px solid #1a8cff;
+    background-color: #1a8cff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.subscription-modal button:hover {
+    background-color: #005bb5;
+}

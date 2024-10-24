@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles_base.css' %}" />
+  </head>
+  <body>
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <header class="header">
+      <div class="logo">OTT Dashboard</div>
+      <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'movies' %}">Movies</a>
+        <a href="{% url 'tv_shows' %}">TV Shows</a>
+        <a href="{% url 'recently_watched' %}">Recently Watched</a>
+        <a href="{% url 'more' %}">More</a>
+        <div class="profile-button" tabindex="0">
+          <img src="https://via.placeholder.com/40" alt="Profile" />
+          <div class="profile-menu">
+            <a href="#" class="my-account-link"
+              ><span class="menu-icon">🧑</span>My Account</a
+            >
+            <a href="#edit-profile"
+              ><span class="menu-icon">✏️</span>Edit Profile</a
+            >
+            <a href="#" class="subscription-button"
+              ><span class="menu-icon">💳</span>Subscription Plan</a
+            >
+            <a href="#"><span class="menu-icon">⚙️</span>Settings</a>
+            <form action = 'sign/'>
+                {% csrf_token %}
+            <a href="{% url 'logout' %}"><span class="menu-icon">🔓</span>Logout</a>
+            </form>
+            <a href="#"><span class="menu-icon">❓</span>Help</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <form method="GET" action="{% url 'search' %}">
+      {% csrf_token %}
+      <div class="search-bar">
+        <input type="text" placeholder="Search..." name="query" />
+      </div>
+    </form>
+
+
+    <!-- Main Content -->
+      {% comment %}
+    <div class="main-content">
+        <div class="video-container">
+            {% for movie in movies %}
+            <div class="video-item">
+                <div class="video-title"><h5>{{movie.M_name}}||{{movie.duration}}||{{movie.release_date}}</h5></div>
+                <video id="my-video"
+                 poster = {% static "images/TH.png" %} 
+                  class="video-js" controls width="300px" height="230px" data-setup="{}">
+                    <source src="{{movie.movie.url}}" type="video/mp4">
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endcomment %}
+
+    {% block content %}
+
+    {% endblock %}
+
+    <div class="container">
+        {% for movie in movies %}
+        <div class="card video-card">
+            <video id="my-video" 
+            {% comment %} poster = {% static "images/TH.png" %} {% endcomment %}
+             class="video" controls>
+            <source src="{{movie.movie.url}}" type="video/mp4">
+                Your browser does not support HTML video.
+            </video>
+            <div class="title">{{movie.M_name}}||{{movie.duration}}||{{movie.release_date}}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="modal-overlay"></div>
+    <div class="my-account-modal">
+      <div class="my-account-content">
+        <img
+          src="https://via.placeholder.com/100"
+          alt="Profile Picture"
+          class="account-profile-pic"
+        />
+        <h3>{{user.first_name}} {{user.last_name}}</h3>
+        <p>Email: {{user.email}}</p>
+        <p>Subscription: {{subscription.plan_name}}</p>
+        <p>Subscription Expires on: {{subscription.exp_date}}</p>
+        <p>Joined On: {{user.date_joined}}</p>
+        <button type="button" class="cancel-button">Close</button>
+      </div>
+    </div>
+    <div class="edit-profile-modal">
+      <h2>Edit Profile</h2>
+      <ul class="edit-profile-options">
+        <li>
+          <a href="#" class="change-profile-pic">Change Profile Picture</a>
+        </li>
+        <li><a href="#" class="change-email">Change Email</a></li>
+        <li><a href="#" class="change-password">Change Password</a></li>
+      </ul>
+      <div class="change-section" id="change-profile-pic">
+        <label for="profile-pic">Profile Picture</label>
+        <input type="file" id="profile-pic" accept="image/*" />
+        <button type="button" class="save-changes-button">Save Changes</button>
+      </div>
+      <div class="change-section" id="change-email">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter new email" />
+        <button type="button" class="save-changes-button">Save Changes</button>
+      </div>
+      <div class="change-section" id="change-password">
+        <label for="password">Change Password</label>
+        <div class="show-password">
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter new password"
+          />
+          <span class="show-password-icon">👁️</span>
+        </div>
+        <button type="button" class="save-changes-button">Save Changes</button>
+      </div>
+      <button type="button" class="cancel-button">Cancel</button>
+    </div>
+    <div class="subscription-modal">
+      <h3>Manage Subscription</h3>
+      <button type="button" class="subscription-renew">
+        Renew Subscription
+      </button>
+      <button type="button" class="subscription-upgrade">
+        Upgrade/Downgrade Subscription
+      </button>
+      <button type="button" class="subscription-add">Add Subscription</button>
+      <button type="button" class="cancel-button">Close</button>
+    </div>
+
+    {% comment %} script {% endcomment %}
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const changeProfilePicLink = document.querySelector(
+          ".change-profile-pic"
+        );
+        const changeEmailLink = document.querySelector(".change-email");
+        const changePasswordLink = document.querySelector(".change-password");
+        const changeProfilePicSection =
+          document.getElementById("change-profile-pic");
+        const changeEmailSection = document.getElementById("change-email");
+        const changePasswordSection =
+          document.getElementById("change-password");
+        const changeSections = document.querySelectorAll(".change-section");
+
+        function hideAllSections() {
+          changeSections.forEach((section) => (section.style.display = "none"));
+        }
+
+        changeProfilePicLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          hideAllSections();
+          changeProfilePicSection.style.display = "block";
+        });
+
+        changeEmailLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          hideAllSections();
+          changeEmailSection.style.display = "block";
+        });
+
+        changePasswordLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          hideAllSections();
+          changePasswordSection.style.display = "block";
+        });
+
+        const myAccountLink = document.querySelector(".my-account-link");
+        const myAccountModal = document.querySelector(".my-account-modal");
+        const profileButton = document.querySelector(".profile-button");
+        const profileMenu = document.querySelector(".profile-menu");
+        const editProfileLink = document.querySelector(
+          '.profile-menu a[href="#edit-profile"]'
+        );
+        const editProfileModal = document.querySelector(".edit-profile-modal");
+        const modalOverlay = document.querySelector(".modal-overlay");
+        const cancelButtonEdit = document.querySelector(
+          ".edit-profile-modal .cancel-button"
+        );
+        const cancelButtonAccount = document.querySelector(
+          ".my-account-modal .cancel-button"
+        );
+        const passwordInput = document.querySelector("#password");
+        const showPasswordIcon = document.querySelector(".show-password-icon");
+        const subscriptionButton = document.querySelector(
+          ".subscription-button"
+        );
+        const subscriptionModal = document.querySelector(".subscription-modal");
+        const cancelButtonSubscription = document.querySelector(
+          ".subscription-modal .cancel-button"
+        );
+
+        profileButton.addEventListener("click", function () {
+          profileMenu.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function (e) {
+          if (
+            !profileButton.contains(e.target) &&
+            !profileMenu.contains(e.target)
+          ) {
+            profileMenu.classList.remove("show");
+          }
+        });
+
+        myAccountLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          profileMenu.classList.remove("show");
+          myAccountModal.classList.add("show");
+          modalOverlay.classList.add("show");
+        });
+
+        editProfileLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          profileMenu.classList.remove("show");
+          editProfileModal.classList.add("show");
+          modalOverlay.classList.add("show");
+        });
+
+        modalOverlay.addEventListener("click", function () {
+          editProfileModal.classList.remove("show");
+          myAccountModal.classList.remove("show");
+          subscriptionModal.classList.remove("show");
+          modalOverlay.classList.remove("show");
+          profileMenu.classList.remove("show");
+        });
+
+        cancelButtonEdit.addEventListener("click", function () {
+          editProfileModal.classList.remove("show");
+          modalOverlay.classList.remove("show");
+          profileMenu.classList.remove("show");
+        });
+
+        cancelButtonAccount.addEventListener("click", function () {
+          myAccountModal.classList.remove("show");
+          modalOverlay.classList.remove("show");
+          profileMenu.classList.remove("show");
+        });
+
+        showPasswordIcon.addEventListener("click", function () {
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            showPasswordIcon.textContent = "🙈";
+          } else {
+            passwordInput.type = "password";
+            showPasswordIcon.textContent = "👁️";
+          }
+        });
+
+        subscriptionButton.addEventListener("click", function () {
+          subscriptionModal.classList.add("show");
+          modalOverlay.classList.add("show");
+          profileMenu.classList.remove("show");
+        });
+
+        cancelButtonSubscription.addEventListener("click", function () {
+          subscriptionModal.classList.remove("show");
+          modalOverlay.classList.remove("show");
+          profileMenu.classList.remove("show");
+        });
+      });
+    </script>
+  </body>
+</html>

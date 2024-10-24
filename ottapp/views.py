@@ -89,7 +89,8 @@ def dashboard(request):
         movies = Movies.objects.order_by('?')[:5]
         c_user = request.user
         sub = Subscription.objects.filter(U_id = c_user)
-        return render(request, 'dashboard.html',{'movies':movies,'user':c_user,'subs':sub})
+        print(sub)
+        return render(request, 'dashboard.html',{'movies':movies,'user':c_user,'subscription':sub})
     except Exception as e:
         messages.error(request, 'Failed to load the dashboard. Please try again.') 
 
