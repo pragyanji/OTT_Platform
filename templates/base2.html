@@ -24,7 +24,11 @@
         <a href="{% url 'recently_watched' %}">Recently Watched</a>
         <a href="{% url 'more' %}">More</a>
         <div class="profile-button" tabindex="0">
-          <img src="https://via.placeholder.com/40" alt="Profile" />
+            {% if user.profile_pic %}
+            <img src="{{ user.profile_pic.url }}" alt="Profile Picture">
+        {% else %}
+            <img src="{% static 'images/prologo.png' %}" alt="Default Profile Picture">
+        {% endif %}
           <div class="profile-menu">
             <a href="#" class="my-account-link"
               ><span class="menu-icon">🧑</span>My Account</a
@@ -54,23 +58,6 @@
 
 
     <!-- Main Content -->
-      {% comment %}
-    <div class="main-content">
-        <div class="video-container">
-            {% for movie in movies %}
-            <div class="video-item">
-                <div class="video-title"><h5>{{movie.M_name}}||{{movie.duration}}||{{movie.release_date}}</h5></div>
-                <video id="my-video"
-                 poster = {% static "images/TH.png" %} 
-                  class="video-js" controls width="300px" height="230px" data-setup="{}">
-                    <source src="{{movie.movie.url}}" type="video/mp4">
-                
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endcomment %}
-
     {% block content %}
 
     {% endblock %}
@@ -79,7 +66,7 @@
         {% for movie in movies %}
         <div class="card video-card">
             <video id="my-video" 
-            {% comment %} poster = {% static "images/TH.png" %} {% endcomment %}
+            poster = {% static "images/TH.png" %}
              class="video" controls>
             <source src="{{movie.movie.url}}" type="video/mp4">
                 Your browser does not support HTML video.
@@ -91,20 +78,23 @@
 
     <div class="modal-overlay"></div>
     <div class="my-account-modal">
-      <div class="my-account-content">
-        <img
-          src="https://via.placeholder.com/100"
-          alt="Profile Picture"
-          class="account-profile-pic"
-        />
-        <h3>{{user.first_name}} {{user.last_name}}</h3>
-        <p>Email: {{user.email}}</p>
-        <p>Subscription: {{subscription.plan_name}}</p>
-        <p>Subscription Expires on: {{subscription.exp_date}}</p>
-        <p>Joined On: {{user.date_joined}}</p>
-        <button type="button" class="cancel-button">Close</button>
-      </div>
+        <div class="my-account-content">
+          <div class="circular--landscape">
+            {% if user.profile_pic %}
+              <img src="{{ user.profile_pic.url }}" alt="Profile Picture">
+            {% else %}
+              <img src="{% static 'images/prologo.png' %}" alt="Default Profile Picture">
+            {% endif %}
+          </div>
+          <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+          <p>Email: {{ user.email }}</p>
+          <p>Subscription: {{ subscription.plan_name }}</p>
+          <p>Subscription Expires on: {{ subscription.exp_date }}</p>
+          <p>Joined On: {{ user.date_joined }}</p>
+          <button type="button" class="cancel-button">Close</button>
+        </div>
     </div>
+   
     <div class="edit-profile-modal">
       <h2>Edit Profile</h2>
       <ul class="edit-profile-options">
@@ -114,15 +104,17 @@
         <li><a href="#" class="change-email">Change Email</a></li>
         <li><a href="#" class="change-password">Change Password</a></li>
       </ul>
+      <form method = 'POST' enctype="multipart/form-data">
+        {% csrf_token %}
       <div class="change-section" id="change-profile-pic">
         <label for="profile-pic">Profile Picture</label>
-        <input type="file" id="profile-pic" accept="image/*" />
-        <button type="button" class="save-changes-button">Save Changes</button>
+        <input type="file" id="profile" name='profile' accept="image/*" />
+        <button type="submit" class="save-changes-button">Save Changes</button>
       </div>
       <div class="change-section" id="change-email">
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter new email" />
-        <button type="button" class="save-changes-button">Save Changes</button>
+        <input type="email" id="email" name='email' placeholder="Enter new email" />
+        <button type="submit" class="save-changes-button">Save Changes</button>
       </div>
       <div class="change-section" id="change-password">
         <label for="password">Change Password</label>
@@ -130,14 +122,16 @@
           <input
             type="password"
             id="password"
+            name = 'password'
             placeholder="Enter new password"
           />
           <span class="show-password-icon">👁️</span>
         </div>
-        <button type="button" class="save-changes-button">Save Changes</button>
+        <button type="submit" class="save-changes-button">Save Changes</button>
       </div>
       <button type="button" class="cancel-button">Cancel</button>
     </div>
+</form>
     <div class="subscription-modal">
       <h3>Manage Subscription</h3>
       <button type="button" class="subscription-renew">

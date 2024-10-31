@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.contrib import messages
-from django.contrib.auth import login,logout
+from django.contrib.auth import login,logout,update_session_auth_hash
 from . models import OTT_user,Subscription,Movies
+from django.core.files.storage import FileSystemStorage
+
 # from django.contrib.auth.hashers import check_password
 import datetime
 # from django.db import connection
@@ -87,13 +89,37 @@ def signin(request):
 def dashboard(request):
     try:
         movies = Movies.objects.order_by('?')[:5]
-        c_user = request.user
-        sub = Subscription.objects.filter(U_id = c_user)
+        user = request.user
+        sub = Subscription.objects.filter(U_id = user).first()
         print(sub)
-        return render(request, 'dashboard.html',{'movies':movies,'user':c_user,'subscription':sub})
+        print(movies)
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            profile = request.FILES.get('profile')
+            print(profile)
+            if email:
+                user.email = email
+            
+            if password:
+                user.set_password(password)
+                update_session_auth_hash(request, user)
+                
+            if profile:
+                fs = FileSystemStorage()
+                filename = fs.save(profile.name, profile)
+                user.profile_pic = filename
+             
+            user.save()
+            messages.success(request, 'Profile updated successfully!')
+            
+        return render(request, 'dashboard.html',{'movies':movies,'user':user,'subscription':sub}) 
     except Exception as e:
-        messages.error(request, 'Failed to load the dashboard. Please try again.') 
-
+        messages.error(request, f'Failed to load the dashboard. Please try again. Error: {str(e)}')
+        return redirect('dashboard')
+    
+  
+    
 def logout_view(request):
     logout(request)
     messages.success(request, 'You have been logged out.')
