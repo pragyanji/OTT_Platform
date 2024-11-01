@@ -159,12 +159,12 @@ def tv_shows(request):
         messages.error(request,'Failed to load the TV Shows. Please try again.')
 
 
-def recently_watched(request):
+def recently_added(request):
     try:
         movies = Movies.objects.raw("SELECT * from ottapp_movies ORDER BY RANDOM() LIMIT 2")
-        return render(request, 'recently_watched.html',{'movies':movies})
+        return render(request, 'recently_added.html',{'movies':movies})
     except Exception as e:
-        messages.error(request,'Failed to load the recently watched. Please try again.')
+        messages.error(request,'Failed to load the recently added. Please try again.')
 
 
 def more(request):
@@ -173,3 +173,9 @@ def more(request):
         return render(request, 'more.html',{'movies':movies})
     except Exception as e:
         messages.error(request,'Failed to load more. Please try again.')
+
+def help(request):
+    try:
+        return render(request, 'help.html')
+    except Exception as e:
+        messages.error(request,'Failed to load help. Please try again.')

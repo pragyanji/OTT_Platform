@@ -4,13 +4,13 @@ from django.contrib.auth.models import AbstractUser
 
 class OTT_user(AbstractUser):
     U_id = models.AutoField(primary_key=True)
-    U_name = models.CharField(max_length = 150)
+    # U_name = models.CharField(max_length = 150)
     password = models.CharField(max_length=150)
     email = models.EmailField(max_length=150, unique=True)
     profile_pic = models.ImageField(upload_to='profiles/',blank=True,null=True)
     
     def __str__(self):
-        return self.U_name
+        return self.username
 
 
 class Subscription(models.Model):
@@ -24,20 +24,15 @@ class Subscription(models.Model):
 
     
 class  Movies(models.Model):
-    # CATEGORY_CHOICES = [
-    #     ('MOV', 'Movie'),
-    #     ('TVS', 'TV Show'),
-    #     ('DOC', 'Documentary'),
-    # ]
     M_id = models.AutoField(primary_key=True)
     M_name = models.CharField(max_length = 150)
     movie = models.FileField(upload_to='movies/')
-    # category = models.CharField(max_length=3, choices=CATEGORY_CHOICES, default='MOV')
     rating = models.IntegerField()
     duration = models.TimeField()
     release_date = models.DateField()
     writer = models.CharField(max_length = 50)
     director = models.CharField(max_length = 50)
+    # added_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.M_name

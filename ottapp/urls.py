@@ -13,9 +13,11 @@ urlpatterns = [
     path('search/',views.search, name='search'),
     path('movies/',views.movies, name='movies'),
     path('tv_shows/',views.tv_shows, name='tv_shows'),
-    path('recently_watched/',views.recently_watched, name='recently_watched'),
+    path('recently_added/',views.recently_added, name='recently_added'),
     path('more/',views.more, name='more'),
     path('logout/',views.logout_view, name='logout'),
+    path('help/',views.help, name='help'),
+    
 ]
 
 if  settings.DEBUG:
