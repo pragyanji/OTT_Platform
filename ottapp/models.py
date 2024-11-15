@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 
 class OTT_user(AbstractUser):
     U_id = models.AutoField(primary_key=True)
-    # U_name = models.CharField(max_length = 150)
     password = models.CharField(max_length=150)
     email = models.EmailField(max_length=150, unique=True)
     profile_pic = models.ImageField(upload_to='profiles/',blank=True,null=True)
