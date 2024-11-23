@@ -31,7 +31,8 @@ class  Movies(models.Model):
     release_date = models.DateField()
     writer = models.CharField(max_length = 50)
     director = models.CharField(max_length = 50)
-    # added_on = models.DateTimeField(auto_now_add=True)
+    #Thumbnail = models.ImageField(upload_to=thumbnails/)
+    #added_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.M_name

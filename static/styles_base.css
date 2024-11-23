@@ -5,6 +5,60 @@ body {
     margin: 0;
     padding: 0;
 }
+  /* Container for messages */
+.messages {
+    position: fixed; /* Fixed positioning to stay at the top right */
+    top: 10px; /* Distance from the top */
+    right: 10px; /* Distance from the right */
+    z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+/* Individual alert messages */
+.alert {
+    padding: 15px;
+    margin-bottom: 10px; /* Space between messages */
+    border: 1px solid transparent;
+    border-radius: 4px;
+    opacity: 0; /* Initially hidden for fade-in effect */
+    animation: fadeIn 0.5s forwards, fadeOut 0.5s 5.5s forwards; /* Fade in and then fade out */
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-error, .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+  /* Animation for fade-in effect */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Animation for fade-out effect */
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0;
+    display: none;}
+  }
 
 .header {
     background-color: #001f3f;
@@ -405,50 +459,3 @@ body {
 .subscription-modal button:hover {
     background-color: #005bb5;
 }
-
-/* Container for messages */
-.messages {
-    position: fixed; /* Fixed positioning to stay at the top right */
-    top: 10px; /* Distance from the top */
-    right: 10px; /* Distance from the right */
-    z-index: 1000; /* Ensure it's on top of other elements */
-  }
-  
-  /* Individual alert messages */
-  .alert {
-    padding: 15px;
-    margin-bottom: 10px; /* Space between messages */
-    border: 1px solid transparent;
-    border-radius: 4px;
-    opacity: 0; /* Initially hidden for fade-in effect */
-    animation: fadeIn 0.5s forwards, fadeOut 0.5s 5.5s forwards; /* Fade in and then fade out */
-  }
-  
-  /* Success message styling */
-  .alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-  }
-  
-  /* Error message styling */
-  .alert-error {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-  }
-  
-  /* Info message styling */
-  .alert-info {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-  }
-  
-  /* Warning message styling */
-  .alert-warning {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-  }
-  

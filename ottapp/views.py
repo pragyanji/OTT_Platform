@@ -69,6 +69,7 @@ def signin(request):
                 c_user = OTT_user.objects.get(email = email)
                 if c_user.check_password(password):
                     login(request,c_user)
+                    messages.success(request,'Login Successfull!!')
                     id = request.user.U_id
                     c_user = Subscription.objects.filter(U_id = id)
                     if c_user.exists():
@@ -80,6 +81,7 @@ def signin(request):
                     # return  redirect('signin')
             else:
                 messages.error(request, 'Invalid email. Please try again.')
+                
         except Exception as e:
             messages.error(request, 'An error occurred during signin. Please try again.')
             
@@ -91,8 +93,6 @@ def dashboard(request):
         movies = Movies.objects.order_by('?')[:5]
         user = request.user
         sub = Subscription.objects.filter(U_id = user).first()
-        print(sub)
-        print(movies)
         if request.method == 'POST':
             email = request.POST.get('email')
             password = request.POST.get('password')
@@ -109,13 +109,14 @@ def dashboard(request):
                 fs = FileSystemStorage()
                 filename = fs.save(profile.name, profile)
                 user.profile_pic = filename
-             
             user.save()
-            messages.success(request, 'Profile updated successfully!')
-            
-        return render(request, 'dashboard.html',{'movies':movies,'user':user,'subscription':sub}) 
+            messages.success(request, 'Profile updated successfully!!')
+        context = {'movies':movies,
+                   'user':user,
+                   'subscription':sub}
+        return render(request, 'dashboard.html',context) 
     except Exception as e:
-        messages.error(request, f'Failed to load the dashboard. Please try again. Error: {str(e)}')
+        messages.error(request, f'Failed to load the dashboard. Please try again.')
         return redirect('dashboard')
     
   
