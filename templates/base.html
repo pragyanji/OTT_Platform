@@ -24,19 +24,20 @@
         {% endif %}
           <div class="profile-menu">
             <a href="#" class="my-account-link"
-              ><span class="menu-icon">🧑</span>My Account</a
-            >
+              ><span class="menu-icon">🧑</span>My Account</a>
             <a href="#edit-profile"
-              ><span class="menu-icon">✏️</span>Edit Profile</a
-            >
+              ><span class="menu-icon">✏️</span>Edit Profile</a>
             <a href="#" class="subscription-button"
-              ><span class="menu-icon">💳</span>Subscription Plan</a
-            >
+              ><span class="menu-icon">💳</span>Subscription Plan</a>
+            
             <a href="#"><span class="menu-icon">⚙️</span>Settings</a>
+            
             <form action = 'sign/'>
                 {% csrf_token %}
             <a href="{% url 'logout' %}"><span class="menu-icon">🔓</span>Logout</a>
             </form>
+            <a href="{% url 'feedback' %}" class="feedback-link"
+              ><span class="menu-icon">🗣️</span>Feedback</a>
             <a href="{% url 'help' %}"><span class="menu-icon">❓</span>Help</a>
           </div>
         </div>
@@ -133,7 +134,6 @@
       <button type="button" class="subscription-upgrade">
         Upgrade/Downgrade Subscription
       </button>
-      <button type="button" class="subscription-add">Add Subscription</button>
       <button type="button" class="cancel-button">Close</button>
     </div>
 

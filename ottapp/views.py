@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.contrib.auth import login,logout,update_session_auth_hash
 from . models import OTT_user,Subscription,Movies
 from django.core.files.storage import FileSystemStorage
-
 # from django.contrib.auth.hashers import check_password
 import datetime
 # from django.db import connection
@@ -180,3 +179,13 @@ def help(request):
         return render(request, 'help.html')
     except Exception as e:
         messages.error(request,'Failed to load help. Please try again.')
+
+def feedback(request):
+    if request.method == 'POST':
+        try:
+            feedback = request.POST.get('feedback', '')
+            messages.success(request, "Thank you for your feedback!")
+            return redirect('dashboard')
+        except Exception as e:
+            messages.error(request, 'Failed to submit feedback. Please try again.')
+    return render(request, 'feedback.html')

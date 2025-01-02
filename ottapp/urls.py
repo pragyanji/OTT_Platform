@@ -17,7 +17,7 @@ urlpatterns = [
     path('more/',views.more, name='more'),
     path('logout/',views.logout_view, name='logout'),
     path('help/',views.help, name='help'),
-    
+    path('feedback/',views.feedback, name='feedback'),
 ]
 
 if  settings.DEBUG:

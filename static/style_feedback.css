@@ -1,0 +1,86 @@
+body {
+    background-color: #001f3f;
+    font-family: Arial, sans-serif;
+    color: #ccc;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    color: #ccc;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: #bbb;
+    font-size: 1.1rem;
+}
+
+textarea {
+    width: 1200px;  /* Full-width to use available space */
+    padding: 1.2rem;  /* Slightly more padding for better text spacing */
+    background-color: #222;  /* Darker background for a deeper look */
+    border: 1px solid #555;  /* Adjusting the border to be visible yet subtle */
+    border-radius: 8px;  /* Rounded corners to match the button */
+    color: #fff;  /* White text for high contrast readability */
+    height: 200px;  /* Adjusted height for more writing space */
+    font-size: 1.1rem;  /* Increased font size for easier reading */
+    line-height: 1.5;  /* Line spacing for better text clarity */
+    resize: none;  /* Disables resizing to maintain layout consistency */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);  /* Soft shadow for depth */
+    transition: border-color 0.3s, box-shadow 0.3s;  /* Smooth transitions for interactive effects */
+}
+
+textarea:focus {
+    border-color: #00aaff;  /* Bright blue border for focus, adds a nice pop */
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.5);  /* Glowing effect for focus */
+    outline: none;  /* Removes the default outline to keep custom styles */
+}
+
+
+.submit-btn {
+    background-color: #007bff;  /* Vibrant blue background */
+    color: white;  /* White text for contrast */
+    border: none;  /* No border for a cleaner look */
+    padding: 1.5rem 2rem;  /* Increased padding for a larger, more tactile button */
+    border-radius: 8px;  /* Slightly larger radius for softer corners */
+    cursor: pointer;  /* Cursor indicates it's clickable */
+    display: block;  /* Block display to fill the container */
+    width: auto;  /* Adjust width to content */
+    max-width: 100%;  /* Ensures it doesn't exceed its container */
+    margin: 2rem auto 0;  /* Increased top margin, auto centers the button horizontally */
+    font-size: 1.2rem;  /* Larger font size for readability */
+    transition: background-color 0.3s;  /* Smooth transition for hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Subtle shadow for depth */
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;  /* Darker blue on hover for visual feedback */
+}
+
+
+.messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: auto;
+    z-index: 2000;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #198754;
+}
+
+.alert-error, .alert-danger {
+    background-color: #dc3545;
+}
