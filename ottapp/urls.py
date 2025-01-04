@@ -9,6 +9,10 @@ urlpatterns = [
     path('signin/',views.signin, name='signin'),
     path('signup/',views.signup, name='signup'),
     path('subscription/',views.subscription, name='subscription'),
+    path('new_subscription/',views.new_subscription, name='new_subscription'),
+    path('renew_subscription/',views.renew_subscription, name='renew_subscription'),
+    path('upgrade_downgrade_subscription/',views.upgrade_downgrade_subscription, name='upgrade_downgrade_subscription'),
+    
     path('dashboard/',views.dashboard, name='dashboard'),
     path('search/',views.search, name='search'),
     path('movies/',views.movies, name='movies'),

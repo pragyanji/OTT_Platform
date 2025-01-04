@@ -1,0 +1,22 @@
+{% extends "subscription_base.html" %}
+{% block title %}New Subscription{% endblock %}
+
+{% block content %}
+<div class="subscription-container">
+    <h2 class="subscription-title">Choose a New Subscription Plan</h2>
+    <div class="plans">
+        {% for plan in plans %}
+        <div class="plan-card">
+            <h3>{{ plan.name }}</h3>
+            <p class="plan-price">Price: Rs.{{ plan.price }}</p>
+            <p class="plan-duration">Duration: {{ plan.duration }} days</p>
+            <form method="POST" action="{% url 'new_subscription' %}">
+                {% csrf_token %}
+                <input type="hidden" name="plan" value="{{ plan.name }}">
+                <button type="submit" class="subscribe-btn">Subscribe</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

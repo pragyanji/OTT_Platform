@@ -55,8 +55,61 @@ def subscription(request):
             return redirect('dashboard')
         except Exception as e:
             messages.error(request, 'Failed to create subscription. Please try again.')
-    return render(request, 'subscription.html')
+    return render(request, 'subscription_base.html')
 
+def new_subscription(request):
+    plans = [
+        {'name': 'Basic', 'price': 200, 'duration': 30},
+        {'name': 'Standard', 'price': 500, 'duration': 60},
+        {'name': 'Premium', 'price': 800, 'duration': 90},
+    ]
+    if request.method == 'POST':
+        plan_name = request.POST.get('plan')
+        date  = datetime.date.today()
+        next_month = date.month + 1 if date.month < 12 else 1
+        date = datetime.date(date.year + 1 if next_month == 1 else date.year,
+                             next_month, date.day)
+        try:
+            user = request.user
+            plan = Subscription.objects.create(
+                plan_name = plan_name,
+                exp_date = date,
+                U_id = user
+                )
+            plan.save()
+            messages.success(request, f'Subscribed to {plan_name} successfully!')
+            return redirect('dashboard')
+        except Exception as e:
+            messages.error(request, 'Failed to create subscription. Please try again.')
+    return render(request, 'new_subscription.html', {'plans': plans})
+   
+def renew_subscription(request):
+    user = request.user
+    subscription = Subscription.objects.filter(U_id = user).first()
+    if subscription:
+        content = {
+            'subscription':subscription
+        }
+    else:
+        messages.error(request,"you have not subscribed any plan till now!!")
+        return redirect('new_subscription')
+    if request.method == 'POST':
+        plan_name = request.POST.get('plan')
+        date  = datetime.date.today()
+        next_month = date.month + 1 if date.month < 12 else 1
+        date = datetime.date(date.year + 1 if next_month == 1 else date.year,
+                             next_month, date.day)
+    return render(request,'renew_subscription.html',content)
+
+def upgrade_downgrade_subscription(request):
+    if request.method == 'POST':
+        plan_name = request.POST.get('plan')
+        date  = datetime.date.today()
+        next_month = date.month + 1 if date.month < 12 else 1
+        date = datetime.date(date.year + 1 if next_month == 1 else date.year,
+                             next_month, date.day)
+    return render(request,'upgrade_downgrade_subscription.html')
+            
 
 def signin(request):
     if request.method == 'POST':
@@ -77,11 +130,11 @@ def signin(request):
                         return redirect('subscription')
                 else:
                     messages.error(request,'Invalid password credentials')
-                    # return  redirect('signin')
             else:
                 messages.error(request, 'Invalid email. Please try again.')
                 
         except Exception as e:
+            print(e)
             messages.error(request, 'An error occurred during signin. Please try again.')
             
     return render(request,'signin.html')
@@ -92,11 +145,11 @@ def dashboard(request):
         movies = Movies.objects.order_by('?')[:5]
         user = request.user
         sub = Subscription.objects.filter(U_id = user).first()
+        
         if request.method == 'POST':
             email = request.POST.get('email')
             password = request.POST.get('password')
             profile = request.FILES.get('profile')
-            print(profile)
             if email:
                 user.email = email
             

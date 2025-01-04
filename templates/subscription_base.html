@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Subscription Management{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style_subscription.css' %}">
+</head>
+<body>
+  {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="subscription-container">
+        <h1 class="subscription-title">Subscription Management</h1>
+        <div class="subscription-links">
+            <a href="{% url 'new_subscription' %}" class="subscription-link">New Subscription</a>
+            <a href="{% url 'renew_subscription' %}" class="subscription-link">Renew Subscription</a>
+            <a href="{% url 'upgrade_downgrade_subscription' %}" class="subscription-link">Upgrade/Downgrade Subscription</a>
+        </div>
+    </div>
+
+    <div class="subscription-content">
+        {% block content %}
+        <!-- Child templates will inject content here -->
+        {% endblock %}
+    </div>
+</body>
+</html>

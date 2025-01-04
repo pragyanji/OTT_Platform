@@ -168,7 +168,7 @@ button:hover {
     border: 1px solid transparent;
     border-radius: 4px;
     opacity: 0; /* Initially hidden for fade-in effect */
-    animation: fadeIn 0.5s forwards, fadeOut 0.5s 5.5s forwards; /* Fade in and then fade out */
+    animation: fadeIn 0.5s forwards, fadeOut 0.5s 2.0s forwards; /* Fade in and then fade out */
 }
 
 /* Success message styling */

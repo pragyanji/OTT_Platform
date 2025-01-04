@@ -27,8 +27,8 @@
               ><span class="menu-icon">🧑</span>My Account</a>
             <a href="#edit-profile"
               ><span class="menu-icon">✏️</span>Edit Profile</a>
-            <a href="#" class="subscription-button"
-              ><span class="menu-icon">💳</span>Subscription Plan</a>
+            <a href="{% url 'subscription' %}" class="subscription-button"
+              ><span class="menu-icon">💳</span>Manage Subscription</a>
             
             <a href="#"><span class="menu-icon">⚙️</span>Settings</a>
             
@@ -59,7 +59,11 @@
     <div class="container">
         {% for movie in movies %}
         <div class="card video-card">
-            <video id="my-video" 
+            <video 
+            controls
+            controlsList="nodownload"
+            preload="metadata"
+            id="my-video" 
             poster = {% static "images/TH.png" %}
              class="video" controls>
             <source src="{{movie.movie.url}}" type="video/mp4">
@@ -92,9 +96,7 @@
     <div class="edit-profile-modal">
       <h2>Edit Profile</h2>
       <ul class="edit-profile-options">
-        <li>
-          <a href="#" class="change-profile-pic">Change Profile Picture</a>
-        </li>
+        <li><a href="#" class="change-profile-pic">Change Profile Picture</a></li>
         <li><a href="#" class="change-email">Change Email</a></li>
         <li><a href="#" class="change-password">Change Password</a></li>
       </ul>
@@ -102,23 +104,18 @@
         {% csrf_token %}
       <div class="change-section" id="change-profile-pic">
         <label for="profile-pic">Profile Picture</label>
-        <input type="file" id="profile" name='profile' accept="image/*" />
+        <input required type="file" id="profile" name='profile' accept="image/*" />
         <button type="submit" class="save-changes-button">Save Changes</button>
       </div>
       <div class="change-section" id="change-email">
         <label for="email">Email</label>
-        <input type="email" id="email" name='email' placeholder="Enter new email" />
+        <input required type="email" id="email" name='email' placeholder="Enter new email" />
         <button type="submit" class="save-changes-button">Save Changes</button>
       </div>
       <div class="change-section" id="change-password">
         <label for="password">Change Password</label>
         <div class="show-password">
-          <input
-            type="password"
-            id="password"
-            name = 'password'
-            placeholder="Enter new password"
-          />
+          <input required type="password" id="password" name = 'password' placeholder="Enter new password" />
           <span class="show-password-icon">👁️</span>
         </div>
         <button type="submit" class="save-changes-button">Save Changes</button>
@@ -126,20 +123,31 @@
       <button type="button" class="cancel-button">Cancel</button>
     </div>
 </form>
-    <div class="subscription-modal">
+    {% comment %} <div class="subscription-modal">
       <h3>Manage Subscription</h3>
-      <button type="button" class="subscription-renew">
+      <li>
+      <a href = "{% url 'renew_subscription' %}" class="subscription-link">Renew Subscription</a> 
+      <a href = "{% url 'upgrade_downgrade_subscription' %}" class="subscription-link">upgrade_downgrade_subscription</a> 
+      </li>
+       <button type="button" class="subscription-renew">
         Renew Subscription
-      </button>
-      <button type="button" class="subscription-upgrade">
+      </button> 
+       <button type="button" class="subscription-upgrade">
         Upgrade/Downgrade Subscription
       </button>
       <button type="button" class="cancel-button">Close</button>
-    </div>
+    </div> {% endcomment %}
 
-    {% comment %} script {% endcomment %}
 
     <script>
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('my-video');
+        video.addEventListener('loadedmetadata', () => {
+          console.log('Video duration:', video.duration); // For debugging
+        });
+      });
+
       document.addEventListener("DOMContentLoaded", function () {
         const changeProfilePicLink = document.querySelector(
           ".change-profile-pic"

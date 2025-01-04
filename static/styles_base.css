@@ -20,7 +20,7 @@ body {
     border: 1px solid transparent;
     border-radius: 4px;
     opacity: 0; /* Initially hidden for fade-in effect */
-    animation: fadeIn 0.5s forwards, fadeOut 0.5s 5.5s forwards; /* Fade in and then fade out */
+    animation: fadeIn 0.5s forwards, fadeOut 0.5s 2.0s forwards; /* Fade in and then fade out */
 }
 
 .alert-success {
@@ -424,7 +424,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.subscription-modal {
+/* .subscription-modal {
     display: none;
     position: fixed;
     top: 50%;
@@ -458,7 +458,7 @@ body {
 
 .subscription-modal button:hover {
     background-color: #005bb5;
-}
+} */
 
 
 /* Styling for Feedback section */
@@ -469,7 +469,7 @@ body {
 }
 
 form {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     align-items: center;
 }
@@ -501,3 +501,4 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #007ea7;
 }
+
