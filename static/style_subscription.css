@@ -108,3 +108,10 @@ body {
   to { opacity: 0;
   display: none; }
 }
+
+
+.back-to-dash {
+  position: absolute;
+  display: block;
+  background-color: #0056b3;
+}

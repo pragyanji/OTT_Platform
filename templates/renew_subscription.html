@@ -7,12 +7,16 @@
     {% if subscription %}
     <p>Current Plan: {{ subscription.plan_name }}</p>
     <p>Expires On: {{ subscription.exp_date }}</p>
-    <form method="POST" action="{% url 'renew_subscription' %}">
+    <form method="POST" >
         {% csrf_token %}
+        <input type="hidden" name="plan" value="{{ subscription.plan_name }}">
         <button type="submit" class="subscribe-btn">Renew Subscription</button>
     </form>
     {% else %}
     <p>You don't have an active subscription. <a href="{% url 'new_subscription' %}">Subscribe Now</a></p>
     {% endif %}
+
+    
+    <a href="{% url 'dashboard' %}"><span class="back-to-dash"></span>Back to Dashboard</a>
 </div>
 {% endblock %}
