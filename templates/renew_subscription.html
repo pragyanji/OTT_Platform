@@ -5,6 +5,7 @@
 <div class="subscription-container">
     <h2 class="subscription-title">Renew Your Subscription</h2>
     {% if subscription %}
+    <div class = "plan-card">
     <p>Current Plan: {{ subscription.plan_name }}</p>
     <p>Expires On: {{ subscription.exp_date }}</p>
     <form method="POST" >
@@ -12,11 +13,13 @@
         <input type="hidden" name="plan" value="{{ subscription.plan_name }}">
         <button type="submit" class="subscribe-btn">Renew Subscription</button>
     </form>
+    {% comment %} <p> If you renew this, your subscription will extend up to {{exp_date}}</p> {% endcomment %}
     {% else %}
     <p>You don't have an active subscription. <a href="{% url 'new_subscription' %}">Subscribe Now</a></p>
     {% endif %}
-
-    
-    <a href="{% url 'dashboard' %}"><span class="back-to-dash"></span>Back to Dashboard</a>
+    </div>
+    <div>
+    <a href="{% url 'dashboard' %}"  class="back-to-dash">Back to Dashboard</a>
+    </div>
 </div>
 {% endblock %}

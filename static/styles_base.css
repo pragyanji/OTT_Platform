@@ -288,10 +288,12 @@ body {
 .edit-profile-modal .cancel-button {
     background-color: #333;
     margin-top: 0.5rem;
+    cursor: pointer;
 }
 
 .edit-profile-modal .cancel-button:hover {
     background-color: #555;
+    
 }
 
 .modal-overlay {

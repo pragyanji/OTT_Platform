@@ -30,8 +30,7 @@
             <a href="{% url 'subscription' %}" class="subscription-button"
               ><span class="menu-icon">💳</span>Manage Subscription</a>
             
-            <a href="#"><span class="menu-icon">⚙️</span>Settings</a>
-            
+            {% comment %} <a href="#"><span class="menu-icon">⚙️</span>Settings</a> {% endcomment %}
             <form action = 'sign/'>
                 {% csrf_token %}
             <a href="{% url 'logout' %}"><span class="menu-icon">🔓</span>Logout</a>
@@ -64,8 +63,9 @@
             controlsList="nodownload"
             preload="metadata"
             id="my-video" 
-            poster = {% static "images/TH.png" %}
-             class="video" controls>
+            {% comment %} poster = {% static "images/TH.png" %} {% endcomment %}
+            poster = "{{movie.Thumbnail.url}}"
+            class="video" controls>
             <source src="{{movie.movie.url}}" type="video/mp4">
                 Your browser does not support HTML video.
             </video>
@@ -102,43 +102,30 @@
       </ul>
       <form method = 'POST' enctype="multipart/form-data">
         {% csrf_token %}
-      <div class="change-section" id="change-profile-pic">
-        <label for="profile-pic">Profile Picture</label>
-        <input required type="file" id="profile" name='profile' accept="image/*" />
-        <button type="submit" class="save-changes-button">Save Changes</button>
-      </div>
-      <div class="change-section" id="change-email">
-        <label for="email">Email</label>
-        <input required type="email" id="email" name='email' placeholder="Enter new email" />
-        <button type="submit" class="save-changes-button">Save Changes</button>
-      </div>
-      <div class="change-section" id="change-password">
-        <label for="password">Change Password</label>
-        <div class="show-password">
-          <input required type="password" id="password" name = 'password' placeholder="Enter new password" />
-          <span class="show-password-icon">👁️</span>
+        <!-- Change Profile Picture Section -->
+        <div class="change-section" id="change-profile-pic">
+          <label for="profile-pic">Profile Picture</label>
+          <input  type="file" id="profile" name='profile' accept="image/*" />
+          <button type="submit" class="save-changes-button">Save Changes</button>
         </div>
-        <button type="submit" class="save-changes-button">Save Changes</button>
-      </div>
-      <button type="button" class="cancel-button">Cancel</button>
+        <!-- Change Email Section -->
+        <div class="change-section" id="change-email">
+          <label for="email">Email</label>
+          <input  type="email" id="email" name='email' placeholder="Enter new email" />
+          <button type="submit" class="save-changes-button">Save Changes</button>
+        </div>
+        <!-- Change Password Section -->
+        <div class="change-section" id="change-password">
+          <label for="password">Change Password</label>
+          <div class="show-password">
+            <input  type="password" id="password" name = 'password' placeholder="Enter new password" />
+            <span class="show-password-icon">👁️</span>
+          </div>
+            <button type="submit" class="save-changes-button">Save Changes</button>
+        </div>
+          <button type="button" class="cancel-button">Cancel</button>
+      </form>
     </div>
-</form>
-    {% comment %} <div class="subscription-modal">
-      <h3>Manage Subscription</h3>
-      <li>
-      <a href = "{% url 'renew_subscription' %}" class="subscription-link">Renew Subscription</a> 
-      <a href = "{% url 'upgrade_downgrade_subscription' %}" class="subscription-link">upgrade_downgrade_subscription</a> 
-      </li>
-       <button type="button" class="subscription-renew">
-        Renew Subscription
-      </button> 
-       <button type="button" class="subscription-upgrade">
-        Upgrade/Downgrade Subscription
-      </button>
-      <button type="button" class="cancel-button">Close</button>
-    </div> {% endcomment %}
-
-
     <script>
 
       document.addEventListener('DOMContentLoaded', () => {
@@ -154,11 +141,9 @@
         );
         const changeEmailLink = document.querySelector(".change-email");
         const changePasswordLink = document.querySelector(".change-password");
-        const changeProfilePicSection =
-          document.getElementById("change-profile-pic");
+        const changeProfilePicSection = document.getElementById("change-profile-pic");
         const changeEmailSection = document.getElementById("change-email");
-        const changePasswordSection =
-          document.getElementById("change-password");
+        const changePasswordSection = document.getElementById("change-password");
         const changeSections = document.querySelectorAll(".change-section");
 
         function hideAllSections() {
@@ -200,13 +185,8 @@
         );
         const passwordInput = document.querySelector("#password");
         const showPasswordIcon = document.querySelector(".show-password-icon");
-        const subscriptionButton = document.querySelector(
-          ".subscription-button"
-        );
-        const subscriptionModal = document.querySelector(".subscription-modal");
-        const cancelButtonSubscription = document.querySelector(
-          ".subscription-modal .cancel-button"
-        );
+
+        
 
         profileButton.addEventListener("click", function () {
           profileMenu.classList.toggle("show");
@@ -263,18 +243,6 @@
             passwordInput.type = "password";
             showPasswordIcon.textContent = "👁️";
           }
-        });
-
-        subscriptionButton.addEventListener("click", function () {
-          subscriptionModal.classList.add("show");
-          modalOverlay.classList.add("show");
-          profileMenu.classList.remove("show");
-        });
-
-        cancelButtonSubscription.addEventListener("click", function () {
-          subscriptionModal.classList.remove("show");
-          modalOverlay.classList.remove("show");
-          profileMenu.classList.remove("show");
         });
       });
     </script>

@@ -44,10 +44,14 @@ body {
   background-color: #0056b3;
   transform: translateY(-5px);
 }
+
 .plan-card {
   display: inline-block;
   width: 45%;
   margin: 20px;
+  background-color: #0c34488c;
+  border-radius: 20px;
+  padding: 10px;
 }
 
 /* Container for messages */
@@ -111,7 +115,27 @@ body {
 
 
 .back-to-dash {
-  position: absolute;
-  display: block;
-  background-color: #0056b3;
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  padding: 15px 30px;
+  margin-top: auto;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  transition: background-color 0.3s, transform 0.3s;
 }
+
+.subscribe-btn {
+  display: inline-block;
+  background-color: #007bff;
+}
+
+/* button[type="submit"] {
+cursor: pointer;
+background-color: #007bff;
+border-radius: 5px;
+border-color: none;
+margin: 2px;
+
+} */

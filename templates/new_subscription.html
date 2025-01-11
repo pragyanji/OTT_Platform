@@ -14,6 +14,7 @@
                 {% csrf_token %}
                 <input type="hidden" name="plan" value="{{ plan.name }}">
                 <button type="submit" class="subscribe-btn">Subscribe</button>
+
             </form>
         </div>
         {% endfor %}
@@ -21,7 +22,7 @@
     <div>
         <form action = 'sign/'>
             {% csrf_token %}
-        <a href="{% url 'logout' %}"><span class="menu-icon">🔓</span>Logout</a>
+        <a href="{% url 'logout' %}" class="back-to-dash"><span>🔓</span>Logout</a>
         </form>
     </div>
 </div>

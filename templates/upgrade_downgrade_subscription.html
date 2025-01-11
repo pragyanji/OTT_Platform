@@ -10,7 +10,7 @@
             <h3>{{ plan.name }}</h3>
             <p class="plan-price">Price: Rs.{{ plan.price }}</p>
             <p class="plan-duration">Duration: {{ plan.duration }} days</p>
-            <form method="POST" action="{% url 'upgrade_downgrade_subscription' %}">
+            <form method="POST" >
                 {% csrf_token %}
                 <input type="hidden" name="plan" value="{{ plan.name }}">
                 <button type="submit" class="subscribe-btn">Upgrade/Downgrade</button>
@@ -18,5 +18,8 @@
         </div>
         {% endfor %}
     </div>
+
+    <a href="{% url 'dashboard' %}" class="back-to-dash">Back to Dashboard</a>
+
 </div>
 {% endblock %}

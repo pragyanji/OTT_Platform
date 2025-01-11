@@ -3,9 +3,10 @@ from django.contrib import messages
 from django.contrib.auth import login,logout,update_session_auth_hash
 from . models import OTT_user,Subscription,Movies
 from django.core.files.storage import FileSystemStorage
-# from django.contrib.auth.hashers import check_password
 import datetime
+# from django.contrib.auth.hashers import check_password
 # from django.db import connection
+
 # Create your views here.
 def home(request):
     return render(request, 'landing.html')
@@ -39,22 +40,6 @@ def signup(request):
 
 
 def subscription(request):
-    if request.method == 'POST':
-        plan_name = request.POST.get('plan')
-        date  = datetime.date.today()
-        next_month = date.month + 1 if date.month < 12 else 1
-        date = datetime.date(date.year + 1 if next_month == 1 else date.year, next_month, date.day)
-        try:
-            user = request.user
-            plan = Subscription.objects.create(
-            plan_name = plan_name,
-            exp_date = date,
-            U_id = user
-                )
-            plan.save()
-            return redirect('dashboard')
-        except Exception as e:
-            messages.error(request, 'Failed to create subscription. Please try again.')
     return render(request, 'subscription_base.html')
 
 def new_subscription(request):
@@ -63,10 +48,13 @@ def new_subscription(request):
         {'name': 'Standard', 'price': 1100, 'duration': 180},
         {'name': 'Premium', 'price': 2000, 'duration': 365},
     ]
+    user = request.user
+    if user.subscription_set.exists():
+        messages.error(request, 'You already have a subscription!!')
+        return redirect('dashboard')
     if request.method == 'POST':
         plan_name = request.POST.get('plan')
         date = datetime.date.today()
-
         try:
             if plan_name == 'Basic':
                 exp_date = date + datetime.timedelta(days=30)
@@ -90,44 +78,60 @@ def new_subscription(request):
     return render(request, 'new_subscription.html', {'plans': plans})
 
 def renew_subscription(request):
-    user = request.user
-    subscription = Subscription.objects.filter(U_id = user).first()
-    if subscription:
-        content = {
-            'subscription':subscription
-        }
-    else:
-        messages.error(request,"you have not subscribed any plan till now!!")
-        return redirect('new_subscription')
-    if request.method == 'POST':
-        plan_name = request.POST.get('plan')
-        date  = datetime.date.today()
-        if plan_name == 'Basic':
-            exp_date = date + datetime.timedelta(days=30)
-        elif plan_name == 'Standard':
-            exp_date = date + datetime.timedelta(days=180)
-        else:  # Premium
-            exp_date = date + datetime.timedelta(days=365)
+    try:
+        user = request.user
+        subscription = Subscription.objects.filter(U_id = user).first()
+        if subscription:
+            content = {
+                'subscription':subscription
+            }
+        else:
+            messages.error(request,"you have not subscribed any plan till now!!")
+            return redirect('new_subscription')
+        if request.method == 'POST':
+            plan_name = request.POST.get('plan')
+            date  = datetime.date.today()
+            if subscription.exp_date > date:
+                date = subscription.exp_date
+            if plan_name == 'Basic':
+                exp_date = date + datetime.timedelta(days=30)
+            elif plan_name == 'Standard':
+                exp_date = date + datetime.timedelta(days=180)
+            else:  # Premium
+                exp_date = date + datetime.timedelta(days=365)
 
-        plan = Subscription.objects.create(
-                plan_name=plan_name,
-                exp_date=exp_date,
-                U_id=user
-                )
-        plan.save()
-        messages.success(request, 'Subscription renewed successfully!')
-        return redirect('dashboard')
-        
+            subscription.plan_name = plan_name
+            subscription.exp_date = exp_date
+            subscription.save()
+            messages.success(request, 'Subscription renewed successfully!')
+            return redirect('dashboard')
+    except Exception as e:
+        print(e)
+        messages.error(request, 'An error occurred while managing subscription. Please try again.')    
     return render(request,'renew_subscription.html',content)
 
 def upgrade_downgrade_subscription(request):
-    if request.method == 'POST':
-        plan_name = request.POST.get('plan')
-        date  = datetime.date.today()
-        next_month = date.month + 1 if date.month < 12 else 1
-        date = datetime.date(date.year + 1 if next_month == 1 else date.year,
-                             next_month, date.day)
-    return render(request,'upgrade_downgrade_subscription.html')
+    try:
+        user = request.user
+        subscription = Subscription.objects.filter(U_id = user).first()
+        if subscription:
+            plans = [
+            {'name': 'Basic', 'price': 200, 'duration': 30},
+            {'name': 'Standard', 'price': 1100, 'duration': 180},
+            {'name': 'Premium', 'price': 2000, 'duration': 365},
+            ]
+        else:
+            messages.error(request,"you have not subscribed any plan till now!!")
+            return redirect('new_subscription')
+        if request.method == 'POST':
+            plan_name = request.POST.get('plan')
+            date  = datetime.date.today()
+            next_month = date.month + 1 if date.month < 12 else 1
+            date = datetime.date(date.year + 1 if next_month == 1 else date.year,
+                                 next_month, date.day)
+    except Exception as e:
+            messages.error(request, 'An error occurred while managing subscription. Please try again.')
+    return render(request,'upgrade_downgrade_subscription.html',{'plans': plans})
             
 
 def signin(request):
@@ -153,7 +157,6 @@ def signin(request):
                 messages.error(request, 'Invalid email. Please try again.')
                 
         except Exception as e:
-            print(e)
             messages.error(request, 'An error occurred during signin. Please try again.')
             
     return render(request,'signin.html')
@@ -169,7 +172,6 @@ def dashboard(request):
             messages.error(request,f"Subscription Expired on {sub.exp_date}")
             return redirect('renew_subscription')
         else:
-            
             if request.method == 'POST':
                 email = request.POST.get('email')
                 password = request.POST.get('password')
@@ -185,6 +187,7 @@ def dashboard(request):
                     fs = FileSystemStorage()
                     filename = fs.save(profile.name, profile)
                     user.profile_pic = filename
+                    print('profile')
                 user.save()
                 messages.success(request, 'Profile updated successfully!!')
             context = {'movies':movies,
