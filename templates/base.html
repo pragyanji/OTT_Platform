@@ -9,7 +9,7 @@
   </head>
   <body>
     <header class="header">
-      <div class="logo">OTT Dashboard</div>
+      <div class="logo">NepaliSaga</div>
       <nav>
         <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'movies' %}">Movies</a>
@@ -20,7 +20,7 @@
             {% if user.profile_pic %}
             <img src="{{ user.profile_pic.url }}" alt="Profile Picture">
         {% else %}
-            <img src="{% static 'images/prologo.png' %}" alt="Default Profile Picture">
+            <img src="{% static 'images/defaultprofile.jpeg' %}" alt="Profile Picture">
         {% endif %}
           <div class="profile-menu">
             <a href="#" class="my-account-link"
@@ -56,6 +56,7 @@
     {% endblock %}
 
     <div class="container">
+      {%if movies%}
         {% for movie in movies %}
         <div class="card video-card">
             <video 
@@ -63,7 +64,6 @@
             controlsList="nodownload"
             preload="metadata"
             id="my-video" 
-            {% comment %} poster = {% static "images/TH.png" %} {% endcomment %}
             poster = "{{movie.Thumbnail.url}}"
             class="video" controls>
             <source src="{{movie.movie.url}}" type="video/mp4">
@@ -72,6 +72,9 @@
             <div class="title">{{movie.M_name}}||{{movie.duration}}||{{movie.release_date}}</div>
         </div>
         {% endfor %}
+        {% else %}
+        <p>No movies or TV Shows found</p>
+        {%endif%}
     </div>
 
     <div class="modal-overlay"></div>
@@ -81,14 +84,14 @@
             {% if user.profile_pic %}
               <img src="{{ user.profile_pic.url }}" alt="Profile Picture">
             {% else %}
-              <img src="{% static 'images/prologo.png' %}" alt="Default Profile Picture">
+              <img src="{% static 'images/defaultprofile.jpeg' %}" alt="Default Profile Picture">
             {% endif %}
           </div>
           <h3>{{ user.first_name }} {{ user.last_name }}</h3>
           <p>Email: {{ user.email }}</p>
-          <p>Subscription: {{ subscription.plan_name }}</p>
-          <p>Subscription Expires on: {{ subscription.exp_date }}</p>
-          <p>Joined On: {{ user.date_joined }}</p>
+          <p>Subscription plan: {{ subscription.plan_name }}</p>
+          <p>Subscription expires on: {{ subscription.exp_date }}</p>
+          <p>Joined on: {{ user.date_joined }}</p>
           <button type="button" class="cancel-button">Close</button>
         </div>
     </div>

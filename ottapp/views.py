@@ -4,8 +4,6 @@ from django.contrib.auth import login,logout,update_session_auth_hash
 from . models import OTT_user,Subscription,Movies
 from django.core.files.storage import FileSystemStorage
 import datetime
-# from django.contrib.auth.hashers import check_password
-# from django.db import connection
 
 # Create your views here.
 def home(request):
@@ -114,25 +112,52 @@ def upgrade_downgrade_subscription(request):
     try:
         user = request.user
         subscription = Subscription.objects.filter(U_id = user).first()
-        if subscription:
-            plans = [
+        if not subscription:
+            messages.error(request,"you have not subscribed any plan till now!!")
+            return redirect('new_subscription')
+            
+        plans = [
             {'name': 'Basic', 'price': 200, 'duration': 30},
             {'name': 'Standard', 'price': 1100, 'duration': 180},
             {'name': 'Premium', 'price': 2000, 'duration': 365},
             ]
-        else:
-            messages.error(request,"you have not subscribed any plan till now!!")
-            return redirect('new_subscription')
         if request.method == 'POST':
             plan_name = request.POST.get('plan')
             date  = datetime.date.today()
-            next_month = date.month + 1 if date.month < 12 else 1
-            date = datetime.date(date.year + 1 if next_month == 1 else date.year,
-                                 next_month, date.day)
+            selected_plan = next((plan for plan in plans if plan['name'] == plan_name), None)
+            # Determine the current plan index and the selected plan index
+            current_plan_index = next((index for index, plan in enumerate(plans) if plan['name'] == subscription.plan_name), None)
+            selected_plan_index = next((index for index, plan in enumerate(plans) if plan['name'] == selected_plan['name']), None)
+            if selected_plan_index > current_plan_index:
+                # Upgrade logic
+                messages.success(request, f"You have chosen to upgrade to {selected_plan['name']} plan. The upgrade will be applied after your current plan expires.")
+            elif selected_plan_index < current_plan_index:
+                # Downgrade logic
+                messages.success(request, f"You have chosen to downgrade to {selected_plan['name']} plan. The downgrade will be applied after your current plan expires.")
+            else:
+                # Same plan
+                messages.info(request, "You are already on the selected plan.")
+                return redirect('upgrade_downgrade_subscription')
+            # Store the selected plan in session data for later processing
+            request.session['next_plan'] = {
+                'name': selected_plan['name'],
+                'price': selected_plan['price'],
+                'duration': selected_plan['duration'],
+            }
+            return redirect('dashboard')
     except Exception as e:
             messages.error(request, 'An error occurred while managing subscription. Please try again.')
     return render(request,'upgrade_downgrade_subscription.html',{'plans': plans})
-            
+         
+# def apply_next_plan(subscription, session_data):
+#     if subscription.end_date <= date.today():
+#         next_plan = session_data.get('next_plan')
+#         if next_plan:
+#             subscription.plan_name = next_plan['name']
+#             subscription.end_date = date.today() + datetime.timedelta(days=next_plan['duration'])
+#             subscription.save()
+#             # Clear the next plan details from the session
+#             session_data.pop('next_plan', None)   
 
 def signin(request):
     if request.method == 'POST':
@@ -168,9 +193,19 @@ def dashboard(request):
         user = request.user
         todays_date  = datetime.date.today()
         sub = Subscription.objects.filter(U_id = user).first()
-        if sub.exp_date<todays_date:
-            messages.error(request,f"Subscription Expired on {sub.exp_date}")
-            return redirect('renew_subscription')
+        if sub and sub.exp_date<todays_date:
+            next_plan = request.session.get('next_plan')
+            if next_plan:
+                sub.plan_name = next_plan['name']
+                sub.exp_date = todays_date + datetime.timedelta(days=next_plan['duration'])
+                sub.save()
+                # Clear the next plan details from the session
+                request.session.pop('next_plan', None)
+                # Notify the user of the applied plan
+                messages.success(request, f"Your subscription has been updated to the {next_plan['name']} plan.")
+            else:
+                messages.error(request,f"Subscription Expired on {sub.exp_date}")
+                return redirect('renew_subscription')
         else:
             if request.method == 'POST':
                 email = request.POST.get('email')
@@ -187,7 +222,6 @@ def dashboard(request):
                     fs = FileSystemStorage()
                     filename = fs.save(profile.name, profile)
                     user.profile_pic = filename
-                    print('profile')
                 user.save()
                 messages.success(request, 'Profile updated successfully!!')
             context = {'movies':movies,
@@ -212,7 +246,7 @@ def search(request):
         if query:
             movies = Movies.objects.filter(M_name__icontains=query)  # Filter movies by title
         else:
-            movies = Movies.objects.all() 
+            movies = Movies.objects.all()
         context = {
             'movies': movies,
             'query': query,
@@ -225,7 +259,7 @@ def search(request):
 
 def movies(request):
     try:
-        movies = Movies.objects.all()
+        movies = Movies.objects.filter(content_type = 'Movie')
         return render(request, 'movies.html',{'movies':movies})
     except Exception as e:
         messages.error(request, 'Failed to load the movies. Please try again.')
@@ -233,15 +267,15 @@ def movies(request):
 
 def tv_shows(request):
     try:
-        movies = Movies.objects.raw("SELECT * from ottapp_movies ORDER BY RANDOM() LIMIT 3")
-        return render(request, 'tv_shows.html',{'movies':movies})
+        TV_Show = Movies.objects.filter(content_type = 'TV Show')
+        return render(request, 'tv_shows.html',{'movies':TV_Show})
     except Exception as e:
         messages.error(request,'Failed to load the TV Shows. Please try again.')
 
 
 def recently_added(request):
     try:
-        movies = Movies.objects.raw("SELECT * from ottapp_movies ORDER BY RANDOM() LIMIT 2")
+        movies = Movies.objects.all().order_by('-added_on')
         return render(request, 'recently_added.html',{'movies':movies})
     except Exception as e:
         messages.error(request,'Failed to load the recently added. Please try again.')
@@ -260,10 +294,14 @@ def help(request):
     except Exception as e:
         messages.error(request,'Failed to load help. Please try again.')
 
+def terms_and_condition(request):
+    return render(request, 'terms_and_condition.html')
+
+
 def feedback(request):
     if request.method == 'POST':
         try:
-            feedback = request.POST.get('feedback', '')
+            feedback = request.POST.get('message', '')
             messages.success(request, "Thank you for your feedback!")
             return redirect('dashboard')
         except Exception as e:

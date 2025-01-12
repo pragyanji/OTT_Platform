@@ -17,14 +17,15 @@
   </div>
 {% endif %}
 <pre>                 Feedback section:</pre>
-<form method="post" action="{% url 'feedback' %}">
+<form method="post" action="https://api.web3forms.com/submit" action="{% url 'feedback' %}" >
     {% csrf_token %}
     <div class="form-group">
-        {% comment %} <label for="feedback">Your Feedback:</label> {% endcomment %}
-        <textarea id="feedback" name="feedback" rows="5" required placeholder="Type your feedback here..."></textarea>
+        <input type="hidden" name="access_key" value="73adfcfd-a13b-4fcf-bd64-a6c6d380c000">
+        <textarea id="feedback" name="message" rows="5" required placeholder="Type your feedback here..."></textarea>
     </div>
     <button type="submit" class="submit-btn">Submit Feedback</button>
 </form>
+<a href="/dashboard" >Back to dashboard</a>
 </body>
 </html>
 

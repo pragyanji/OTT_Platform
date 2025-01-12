@@ -12,7 +12,6 @@ urlpatterns = [
     path('new_subscription/',views.new_subscription, name='new_subscription'),
     path('renew_subscription/',views.renew_subscription, name='renew_subscription'),
     path('upgrade_downgrade_subscription/',views.upgrade_downgrade_subscription, name='upgrade_downgrade_subscription'),
-    
     path('dashboard/',views.dashboard, name='dashboard'),
     path('search/',views.search, name='search'),
     path('movies/',views.movies, name='movies'),
@@ -22,6 +21,7 @@ urlpatterns = [
     path('logout/',views.logout_view, name='logout'),
     path('help/',views.help, name='help'),
     path('feedback/',views.feedback, name='feedback'),
+    path('terms_and_condition/',views.terms_and_condition, name='terms_and_condition'),
 ]
 
 if  settings.DEBUG:
